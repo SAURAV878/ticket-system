@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # Database - Pillar #1
+  postgres_db:
+    image: postgres:15-alpine
+    container_name: ticket_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpass
+      POSTGRES_DB: ticket_system
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  # Cache & Rate Limiter - Pillar #4
+  redis_cache:
+    image: redis:alpine
+    container_name: ticket_redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:
