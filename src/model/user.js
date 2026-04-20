@@ -32,4 +32,11 @@ const User = database.sequelize.define('User', {
     }
 });
 
+User.associate = (models) => {
+    User.hasOne(models.Profile, {
+        foreignKey: 'userId',
+        as: 'profile',
+        onDelete: 'CASCADE'
+    })
+}
 export default User;

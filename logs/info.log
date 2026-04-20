@@ -4,3 +4,8 @@
 {"level":"info","message":" PostgreSQL connected successfully!","timestamp":"2026-04-19T15:01:47.401Z"}
 {"level":"info","message":"Server is running in 8000","timestamp":"2026-04-19T15:01:47.406Z"}
 {"level":"info","message":"Garceful Shutdown initaed","timestamp":"2026-04-19T15:02:51.854Z"}
+{"level":"info","message":" PostgreSQL connected successfully!","timestamp":"2026-04-19T17:33:45.815Z"}
+{"level":"info","message":"Server is running in 8000","timestamp":"2026-04-19T17:33:45.822Z"}
+{"level":"info","message":"Garceful Shutdown initaed","timestamp":"2026-04-19T17:33:53.997Z"}
+{"level":"info","message":"server closed","timestamp":"2026-04-19T17:33:53.999Z"}
+{"level":"info","message":"Database connection closed","timestamp":"2026-04-19T17:33:54.006Z"}

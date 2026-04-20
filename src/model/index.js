@@ -1,7 +1,8 @@
 import User from './user.js';
 import database from '../core/database.js';
+import Profile from './profile.js';
 
-const models = {User};
+const models = {User, Profile};
 
 Object.keys(models).forEach(modleName => {
     if(models[modleName].associate) {
@@ -9,4 +10,4 @@ Object.keys(models).forEach(modleName => {
     }
 });
 
-export { database, User};
+export { database, User, Profile};
