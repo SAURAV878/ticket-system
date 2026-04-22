@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import database from "../core/database";
+import database from "../core/database.js";
 
 const Profile = database.sequelize.define('Profile', {
     id: {
@@ -46,6 +46,8 @@ const Profile = database.sequelize.define('Profile', {
         type: DataTypes.DATE,
         allowNull: false
     }
+}, {
+    tableName: 'profiles'
 });
 
 Profile.associate = (models) => {
