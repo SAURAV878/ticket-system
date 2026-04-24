@@ -3,8 +3,10 @@ import User from "../model/user.js";
 import AppError from "../utils/appError.js";
 import catchAsync from "../utils/catchAsync.js";
 import database from "../core/database.js";
-import jwt from "jsonwebtoken";
+import jwt, { decode } from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import redisClient from "../middleware/ratelimit.js"
+
 
 
 export const signUp = catchAsync(async (req, res, next) => {
@@ -79,3 +81,31 @@ export const login = catchAsync(async (req, res, next) => {
             token
         });
     });
+
+
+export const logout = catchAsync(async (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+        return next(new AppError('You are not logged in!', 400));
+    }
+
+    const decoded = jwt.decode(token);
+    if (!decoded) {
+        return next(new AppError('Invalid token', 400));
+    }
+
+    //Calculate remaining time (in seconds)
+    const now = Math.floor(Date.now() / 1000);
+    const timeLeft = decoded.exp - now;
+
+    // Save token to Redis (Blacklist) if it's still valid
+    if (timeLeft > 0) {
+        await redisClient.setEx(`blacklist_${token}`, timeLeft, 'true');
+    }
+
+    res.status(200).json({ 
+        status: 'success', 
+        message: 'Logged out successfully' 
+    });
+});

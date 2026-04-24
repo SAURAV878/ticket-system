@@ -1,7 +1,9 @@
-import User from "../model/user.js";
 import AppError from "../utils/appError.js";
 import catchAsync from "../utils/catchAsync.js";
 import jwt from 'jsonwebtoken';
+import {User , Profile} from "../model/index.js"
+import redisClient from "./ratelimit.js";
+
 
 export const protect = catchAsync(async (req, res, next) => {
     let token;
@@ -16,7 +18,17 @@ export const protect = catchAsync(async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const currentUser = await User.findByPk(decoded.id);
+    const isBlacklisted = await redisClient.get(`blacklist_${token}`);
+    if(isBlacklisted) {
+        return next (new AppError('Token has been invalidated.Please login again', 401));
+    }
+
+    const currentUser = await User.findByPk(decoded.id, {
+        include: [{
+            model: Profile, as: 'profile'
+        }]
+    });
+
     if(!currentUser) {
         return next (new AppError('User no longer exists', 401));
     }
